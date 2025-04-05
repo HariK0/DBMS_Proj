@@ -272,10 +272,10 @@
             <nav class="navbar">
                 <div class="logo">Paper Trail</div>
                 <ul class="nav-links">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="add-book.html">Add Book</a></li>
-                    <li><a href="view-books.html">View Books</a></li>
-                    <li><a href="issue-book.html">Issue Book</a></li>
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                    <li><a href="{{ url_for('add_book') }}">Add Book</a></li>
+                    <li><a href="{{ url_for('view_books') }}">View Books</a></li>
+                    <li><a href="#issue-book">Issue Book</a></li>
                 </ul>
                 <button class="hamburger">☰</button>
             </nav>
@@ -286,7 +286,7 @@
         <div class="container">
             <h1>Welcome to Paper Trail</h1>
             <p>A comprehensive solution for managing your library's books, members, and borrowing processes with ease.</p>
-            <a href="view-books.html" class="btn">Browse Books</a>
+            <a href="{{ url_for('view_books') }}" class="btn">Browse Books</a>
         </div>
     </section>
     
@@ -322,15 +322,15 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <h3>About Us</h3>
-                    <p>Library Management System is a modern solution designed to streamline library operations and enhance user experience.</p>
+                    <p>Paper Trail Library Management System is a modern solution designed to streamline library operations and enhance user experience.</p>
                 </div>
                 <div class="footer-section">
                     <h3>Quick Links</h3>
                     <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="add-book.html">Add Book</a></li>
-                        <li><a href="view-books.html">View Books</a></li>
-                        <li><a href="issue-book.html">Issue Book</a></li>
+                        <li><a href="{{ url_for('home') }}">Home</a></li>
+                        <li><a href="{{ url_for('add_book') }}">Add Book</a></li>
+                        <li><a href="{{ url_for('view_books') }}">View Books</a></li>
+                        <li><a href="#issue-book">Issue Book</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
