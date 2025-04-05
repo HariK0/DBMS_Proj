@@ -335,7 +335,7 @@
             </table>
             {% else %}
             <div class="empty-state">
-                <p>No books found in the library. <a href="/add-book">Add a book</a> to get started.</p>
+                <p>No books found in the library. <a href="{{ url_for('add_book') }}">Add a book</a> to get started.</p>
             </div>
             {% endif %}
         </div>
