@@ -64,11 +64,12 @@ def add_book():
         return redirect(url_for('add_book'))
     
     return render_template('add-book.html')
-    @app.route('/view-books')
+    
+@app.route('/view-books')
 def view_books():
     # Query all books from the database
     books = Book.query.all()
     return render_template('view-books.html', books=books)
-
+   
 if __name__ == '__main__':
     app.run(debug=True)
