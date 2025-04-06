@@ -13,6 +13,13 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Initialize database
 db = SQLAlchemy(app)
 
+# Add this helper function right here
+@app.context_processor
+def utility_processor():
+    def now():
+        return datetime.now()
+    return dict(now=now)
+
 # Book model
 class Book(db.Model):
     __tablename__ = 'books'
