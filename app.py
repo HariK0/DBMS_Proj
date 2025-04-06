@@ -64,6 +64,87 @@ def add_book():
         return redirect(url_for('add_book'))
     
     return render_template('add-book.html')
+# Add this to your app.py file
+
+# Transaction model i did changes here
+class Transaction(db.Model):
+    __tablename__ = 'transactions'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    book_id = db.Column(db.Integer, db.ForeignKey('books.id'), nullable=False)
+    member_name = db.Column(db.String(200), nullable=False)
+    issue_date = db.Column(db.DateTime, default=datetime.datetime.now)
+    return_date = db.Column(db.DateTime, nullable=True)
+    due_date = db.Column(db.DateTime, nullable=False)
+    status = db.Column(db.String(20), default='issued')  # issued, returned, overdue
+    
+    # Relationship to access book details
+    book = db.relationship('Book', backref=db.backref('transactions', lazy=True))
+    
+    def __repr__(self):
+        return f'<Transaction {self.id}: {self.book.title} - {self.member_name}>'
+
+# Make sure to import datetime at the top of your file
+import datetime
+
+# Create the issue-book route
+@app.route('/issue-book', methods=['GET', 'POST'])
+def issue_book():
+    if request.method == 'POST':
+        # Extract form data
+        book_id = request.form.get('book_id')
+        member_name = request.form.get('member_name')
+        due_days = int(request.form.get('due_days', 14))  # Default to 14 days
+        
+        # Calculate due date
+        issue_date = datetime.datetime.now()
+        due_date = issue_date + datetime.timedelta(days=due_days)
+        
+        # Create new transaction
+        new_transaction = Transaction(
+            book_id=book_id,
+            member_name=member_name,
+            issue_date=issue_date,
+            due_date=due_date
+        )
+        
+        # Update book quantity (decrease by 1)
+        book = Book.query.get(book_id)
+        if book and book.quantity > 0:
+            book.quantity -= 1
+            db.session.add(new_transaction)
+            db.session.commit()
+            return redirect(url_for('view_transactions'))
+        else:
+            error = "Book not available for issuance."
+            books = Book.query.filter(Book.quantity > 0).all()
+            return render_template('issue-book.html', books=books, error=error)
+    
+    # GET request - show the form
+    books = Book.query.filter(Book.quantity > 0).all()
+    return render_template('issue-book.html', books=books)
+
+# Route to view all transactions
+@app.route('/view-transactions')
+def view_transactions():
+    transactions = Transaction.query.all()
+    return render_template('view-transactions.html', transactions=transactions)
+
+# Route to return a book
+@app.route('/return-book/<int:transaction_id>', methods=['POST'])
+def return_book(transaction_id):
+    transaction = Transaction.query.get_or_404(transaction_id)
+    
+    # Update transaction
+    transaction.return_date = datetime.datetime.now()
+    transaction.status = 'returned'
+    
+    # Update book quantity
+    book = Book.query.get(transaction.book_id)
+    book.quantity += 1
+    
+    db.session.commit()
+    return redirect(url_for('view_transactions'))
     
 @app.route('/view-books')
 def view_books():
