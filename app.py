@@ -81,7 +81,7 @@ class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     book_id = db.Column(db.Integer, db.ForeignKey('books.id'), nullable=False)
     member_name = db.Column(db.String(200), nullable=False)
-    issue_date = db.Column(db.DateTime, default=datetime.datetime.now)
+    issue_date = db.Column(db.DateTime, default=datetime.now)
     return_date = db.Column(db.DateTime, nullable=True)
     due_date = db.Column(db.DateTime, nullable=False)
     status = db.Column(db.String(20), default='issued')  # issued, returned, overdue
