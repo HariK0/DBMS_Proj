@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 import os
@@ -85,7 +86,7 @@ class Transaction(db.Model):
         return f'<Transaction {self.id}: {self.book.title} - {self.member_name}>'
 
 # Make sure to import datetime at the top of your file
-import datetime
+
 
 # Create the issue-book route
 @app.route('/issue-book', methods=['GET', 'POST'])
